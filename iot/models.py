@@ -1,6 +1,7 @@
 from django.db import models
 from auth.models import Empresa
 
+
 # Módulos
 class Modulo(models.Model):
     cod_modulo = models.AutoField(primary_key=True)
@@ -13,6 +14,7 @@ class Modulo(models.Model):
     def __str__(self):
         return self.nombre
 
+
 # Relé
 class RegistrosRele(models.Model):
     cod_registro = models.AutoField(primary_key=True)
@@ -23,7 +25,8 @@ class RegistrosRele(models.Model):
     def __str__(self):
         return f'Registro {self.cod_registro}'
 
-#Sensor de flujo de agua
+
+# Sensor de flujo de agua
 class RegistrosAgua(models.Model):
     cod_registro = models.AutoField(primary_key=True)
     cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
@@ -35,7 +38,8 @@ class RegistrosAgua(models.Model):
     def __str__(self):
         return f'Registro de Agua {self.cod_registro}'
 
-#Sensor ultrasónico
+
+# Sensor ultrasónico
 class RegistrosUltrasonico(models.Model):
     cod_registro = models.AutoField(primary_key=True)
     cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
@@ -47,23 +51,25 @@ class RegistrosUltrasonico(models.Model):
     def __str__(self):
         return f'Registro Ultrasonico {self.cod_registro}'
 
-#Sensor de calidad de aire
+
+# Sensor de calidad de aire
 class RegistrosAire(models.Model):
     cod_registro = models.AutoField(primary_key=True)
     cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
-    calidad_aire = models.CharField(max_length=255) 
+    calidad_aire = models.CharField(max_length=255)
     monoxcarbono = models.DecimalField(max_digits=10, decimal_places=2)
     amoniaco = models.DecimalField(max_digits=10, decimal_places=2)
-    alerta = models.CharField(max_length=255)  
+    alerta = models.CharField(max_length=255)
     dlargo_plazo = models.DecimalField(max_digits=10, decimal_places=2)
     cont_ventilacion = models.BooleanField()
-    cot_purificado = models.BooleanField() 
+    cot_purificado = models.BooleanField()
 
     def __str__(self):
         return f'Registro de Aire {self.cod_registro}'
 
-#alertas
+
+# alertas
 class Alertas(models.Model):
     cod_alerta = models.AutoField(primary_key=True)
     cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
@@ -74,7 +80,8 @@ class Alertas(models.Model):
     def __str__(self):
         return f'Alerta {self.cod_alerta}'
 
-#mantenimientos
+
+# mantenimientos
 class Mantenimientos(models.Model):
     cod_mant = models.AutoField(primary_key=True)
     fecha_hora = models.DateTimeField()
@@ -85,7 +92,8 @@ class Mantenimientos(models.Model):
     def __str__(self):
         return f'Mantenimiento {self.cod_mant}'
 
-#temporizadores
+
+# temporizadores
 class Temporizadores(models.Model):
     cod_temp = models.AutoField(primary_key=True)
     temp_inicio = models.DateTimeField()
