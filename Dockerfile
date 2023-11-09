@@ -17,4 +17,6 @@ COPY . /app
 EXPOSE 5000
 
 # Comando para ejecutar la aplicación cuando se inicia el contenedor
+CMD ["python", "manage.py", "migrate"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:5000"]
+
