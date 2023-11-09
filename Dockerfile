@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia el contenido del directorio actual al contenedor en /app
 COPY . /app
 
-# Expone el puerto 8000 para que pueda ser accedido desde fuera del contenedor
-EXPOSE 8000
+# Expone el puerto 5000 para que pueda ser accedido desde fuera del contenedor
+EXPOSE 5000
 
 # Comando para ejecutar la aplicación cuando se inicia el contenedor
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
