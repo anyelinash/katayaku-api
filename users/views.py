@@ -1,8 +1,8 @@
-from .models import Usuario, Empresa
+from .models import Usuario, Empresa, Reporte
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializer import EmpresaSerializer, UsuarioSerializer
+from .serializer import EmpresaSerializer, UsuarioSerializer, ReporteSerializer
 
 class IndexView(APIView):
     
@@ -86,3 +86,36 @@ class UsuariosPorEmpresaView(APIView):
             return Response(usuario_data, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
             return Response({'error': 'No se encontraron usuarios para la empresa con el código proporcionado'}, status=status.HTTP_404_NOT_FOUND)
+        
+#Reportes de usuarios
+class RepView(APIView):
+
+    def get(self,request):
+        dataRep = Reporte.objects.all()
+        serRep = ReporteSerializer(dataRep,many=True)
+        return Response(serRep.data)
+    
+    def post(self,request):
+        serRep = ReporteSerializer(data=request.data)
+        serRep.is_valid(raise_exception=True)
+        serRep.save()
+        return Response(serRep.data)
+    
+class RepDetailView(APIView):
+    def get(self,request,pk):
+        dataRep = Reporte.objects.get(cod_rep=pk)
+        serRep = ReporteSerializer(dataRep)
+        return Response(serRep.data)
+    
+    def put(self,request,pk):
+        dataRep = Reporte.objects.get(cod_rep=pk)
+        serRep = ReporteSerializer(dataRep,data=request.data)
+        serRep.is_valid(raise_exception=True)
+        serRep.save()
+        return Response(serRep.data)
+    
+    def delete(self,request,pk):
+        dataRep = Reporte.objects.get(cod_rep=pk)
+        serRep = ReporteSerializer(dataRep)
+        dataRep.delete()
+        return Response(serRep.data)

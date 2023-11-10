@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Empresa, Usuario
+from .models import Empresa, Usuario, Reporte
 
 class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,3 +10,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ('codigo_usu', 'codigo_emp', 'nombre', 'dni', 'correo', 'contrasena')
+
+#Reportes de usuarios
+class ReporteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reporte
+        fields = '__all__'
