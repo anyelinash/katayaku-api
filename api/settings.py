@@ -25,6 +25,9 @@ SECRET_KEY = 'django-insecure-j0gell7b=5&#a9sh!6w5ajx+jqr1n3pz^na4o7t0madx3*m!b*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Habilitar CORS para todos los dominios
+CORS_ORIGIN_ALLOW_ALL = True
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -50,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
 ]
 
 ROOT_URLCONF = 'api.urls'
