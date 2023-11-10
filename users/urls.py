@@ -8,7 +8,6 @@ urlpatterns = [
     path('empresa/<int:pk>', views.EmpDetailView.as_view()),
 
     # Usuario
-    path('', views.IndexView.as_view(), name='index'),
     path('usuarios', views.UsuView.as_view(), name='usuarios'),
     path('usuario/<int:pk>', views.UsuDetailView.as_view()),
 

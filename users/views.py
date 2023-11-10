@@ -103,19 +103,19 @@ class RepView(APIView):
     
 class RepDetailView(APIView):
     def get(self,request,pk):
-        dataRep = Reporte.objects.get(cod_rep=pk)
+        dataRep = Reporte.objects.get(codigo_rep=pk)
         serRep = ReporteSerializer(dataRep)
         return Response(serRep.data)
     
     def put(self,request,pk):
-        dataRep = Reporte.objects.get(cod_rep=pk)
+        dataRep = Reporte.objects.get(codigo_rep=pk)
         serRep = ReporteSerializer(dataRep,data=request.data)
         serRep.is_valid(raise_exception=True)
         serRep.save()
         return Response(serRep.data)
     
     def delete(self,request,pk):
-        dataRep = Reporte.objects.get(cod_rep=pk)
+        dataRep = Reporte.objects.get(codigo_rep=pk)
         serRep = ReporteSerializer(dataRep)
         dataRep.delete()
         return Response(serRep.data)
