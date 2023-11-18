@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mqtt_server',
     'users',
-    'iot'
+    'iot',
+    'servicios',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -129,3 +132,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#WEBSOCKET_URL
+WEBSOCKET_URL = config('WEBSOCKET_URL', default='ws://localhost:8000/ws/')
+
+#SGI_APPLICATION
+ASGI_APPLICATION = 'katayaku-api.asgi.servicios'
