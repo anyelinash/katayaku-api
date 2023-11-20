@@ -9,8 +9,8 @@ class EmpresaSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Usuario
-        fields = ('codigo_usu', 'codigo_emp', 'nombre', 'dni', 'correo', 'contrasena')
-
+        fields = ('codigo_usu', 'codigo_emp', 'provider_id', 'provider_specific_uid','nombre', 'dni', 'correo', 'contrasena', 'photo_url')
+        
 #Reportes de usuarios
 class ReporteSerializer(serializers.ModelSerializer):
     class Meta:
