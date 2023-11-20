@@ -4,6 +4,7 @@ from asgiref.sync import async_to_sync
 
 channel_layer = get_channel_layer()
 
+
 async def some_view(request):
     # ...
     # Algo en tu vista

@@ -1,6 +1,7 @@
 from django.db import models
 
-#Usuarios
+
+# Usuarios
 class Usuario(models.Model):
     codigo_usu = models.AutoField(primary_key=True)  # PK autoincremental
     provider_id = models.CharField(max_length=255)
@@ -8,31 +9,32 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=200)
     dni = models.CharField(max_length=8)
     correo = models.EmailField()
-    contrasena = models.CharField(max_length=20)  
+    contrasena = models.CharField(max_length=20)
     photo_url = models.URLField()
 
     def __str__(self):
         return self.nombre
 
-#Empresa
+
+# Empresa
 class Empresa(models.Model):
     codigo_emp = models.AutoField(primary_key=True)  # PK autoincremental
     codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE) # FK a la tabla Usuario
     nombre = models.CharField(max_length=200)
     ruc = models.CharField(max_length=11)
     correo = models.EmailField()
-    contrasena = models.CharField(max_length=20) 
+    contrasena = models.CharField(max_length=20)
 
     def __str__(self):
         return self.nombre
 
-#Reportes de usuario
+
+# Reportes de usuario
 class Reporte(models.Model):
     LUZ = 'Reporte de Luz'
     AGUA = 'Reporte de Agua'
     AIRE = 'Reporte de Calidad de Aire'
     ULTRASONIC = 'Reporte de Movimiento'
-
 
     REPORTES_CHOICES = (
         (LUZ, 'Reporte de Luz'),

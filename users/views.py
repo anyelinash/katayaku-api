@@ -4,80 +4,86 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializer import EmpresaSerializer, UsuarioSerializer, ReporteSerializer
 
+
 class IndexView(APIView):
-    
-    def get(self,request):
-        context = {'mensaje':'servidor activo'}
+
+    def get(self, request):
+        context = {'mensaje': 'servidor activo'}
         return Response(context)
-    
-#Empresa
+
+
+# Empresa
 class EmpView(APIView):
 
-    def get(self,request):
+    def get(self, request):
         dataEmp = Empresa.objects.all()
-        serEmp = EmpresaSerializer(dataEmp,many=True)
+        serEmp = EmpresaSerializer(dataEmp, many=True)
         return Response(serEmp.data)
-    
-    def post(self,request):
+
+    def post(self, request):
         serEmp = EmpresaSerializer(data=request.data)
         serEmp.is_valid(raise_exception=True)
         serEmp.save()
-        
+
         return Response(serEmp.data)
-    
+
+
 class EmpDetailView(APIView):
-    
-    def get(self,request,pk):
+
+    def get(self, request, pk):
         dataEmp = Empresa.objects.get(codigo_emp=pk)
         serEmp = EmpresaSerializer(dataEmp)
         return Response(serEmp.data)
-    
-    def put(self,request,pk):
+
+    def put(self, request, pk):
         dataEmp = Empresa.objects.get(codigo_emp=pk)
-        serEmp = EmpresaSerializer(dataEmp,data=request.data)
+        serEmp = EmpresaSerializer(dataEmp, data=request.data)
         serEmp.is_valid(raise_exception=True)
         serEmp.save()
         return Response(serEmp.data)
-    
-    def delete(self,request,pk):
+
+    def delete(self, request, pk):
         dataEmp = Empresa.objects.get(codigo_emp=pk)
         serEmp = EmpresaSerializer(dataEmp)
         dataEmp.delete()
         return Response(serEmp.data)
 
-#Usuario
+
+# Usuario
 class UsuView(APIView):
 
-    def get(self,request):
+    def get(self, request):
         dataUsu = Usuario.objects.all()
-        serUsu = UsuarioSerializer(dataUsu,many=True)
+        serUsu = UsuarioSerializer(dataUsu, many=True)
         return Response(serUsu.data)
-    
-    def post(self,request):
+
+    def post(self, request):
         serUsu = UsuarioSerializer(data=request.data)
         serUsu.is_valid(raise_exception=True)
         serUsu.save()
         return Response(serUsu.data)
-    
+
+
 class UsuDetailView(APIView):
-    def get(self,request,pk):
+    def get(self, request, pk):
         dataUsu = Usuario.objects.get(codigo_usu=pk)
         serUsu = UsuarioSerializer(dataUsu)
         return Response(serUsu.data)
-    
-    def put(self,request,pk):
+
+    def put(self, request, pk):
         dataUsu = Usuario.objects.get(codigo_usu=pk)
-        serUsu = UsuarioSerializer(dataUsu,data=request.data)
+        serUsu = UsuarioSerializer(dataUsu, data=request.data)
         serUsu.is_valid(raise_exception=True)
         serUsu.save()
         return Response(serUsu.data)
-    
-    def delete(self,request,pk):
+
+    def delete(self, request, pk):
         dataUsu = Usuario.objects.get(codigo_usu=pk)
         serUsu = UsuarioSerializer(dataUsu)
         dataUsu.delete()
         return Response(serUsu.data)
-    
+
+
 class UsuariosPorEmpresaView(APIView):
     def get(self, request, cod_emp, format=None):
         try:
@@ -85,36 +91,39 @@ class UsuariosPorEmpresaView(APIView):
             usuario_data = [{'codigo_usu': usuario.codigo_usu, 'nombre': usuario.nombre} for usuario in usuarios]
             return Response(usuario_data, status=status.HTTP_200_OK)
         except Usuario.DoesNotExist:
-            return Response({'error': 'No se encontraron usuarios para la empresa con el código proporcionado'}, status=status.HTTP_404_NOT_FOUND)
-        
-#Reportes de usuarios
+            return Response({'error': 'No se encontraron usuarios para la empresa con el código proporcionado'},
+                            status=status.HTTP_404_NOT_FOUND)
+
+
+# Reportes de usuarios
 class RepView(APIView):
 
-    def get(self,request):
+    def get(self, request):
         dataRep = Reporte.objects.all()
-        serRep = ReporteSerializer(dataRep,many=True)
+        serRep = ReporteSerializer(dataRep, many=True)
         return Response(serRep.data)
-    
-    def post(self,request):
+
+    def post(self, request):
         serRep = ReporteSerializer(data=request.data)
         serRep.is_valid(raise_exception=True)
         serRep.save()
         return Response(serRep.data)
-    
+
+
 class RepDetailView(APIView):
-    def get(self,request,pk):
+    def get(self, request, pk):
         dataRep = Reporte.objects.get(codigo_rep=pk)
         serRep = ReporteSerializer(dataRep)
         return Response(serRep.data)
-    
-    def put(self,request,pk):
+
+    def put(self, request, pk):
         dataRep = Reporte.objects.get(codigo_rep=pk)
-        serRep = ReporteSerializer(dataRep,data=request.data)
+        serRep = ReporteSerializer(dataRep, data=request.data)
         serRep.is_valid(raise_exception=True)
         serRep.save()
         return Response(serRep.data)
-    
-    def delete(self,request,pk):
+
+    def delete(self, request, pk):
         dataRep = Reporte.objects.get(codigo_rep=pk)
         serRep = ReporteSerializer(dataRep)
         dataRep.delete()

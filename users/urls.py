@@ -14,7 +14,7 @@ urlpatterns = [
     path('usuarios/por_empresa/<str:cod_emp>/', views.UsuariosPorEmpresaView.as_view(), name='usuarios-por-empresa'),
 
     
-    path('reportes',views.RepView.as_view(),name='reportes'),
-    path('reporte/<int:pk>',views.RepDetailView.as_view())
+    path('reportes', views.RepView.as_view(), name='reportes'),
+    path('reporte/<int:pk>', views.RepDetailView.as_view())
 
 ]
