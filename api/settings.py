@@ -86,8 +86,12 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'katanyttdb',
+        'USER': 'root',
+        'PASSWORD': '6SQPauK43WnDwbOzDqI8SJZ97lwpW2qH',
+        'HOST': '34.73.226.103',
+        'PORT': '4406',
     }
 }
 
