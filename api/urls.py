@@ -21,6 +21,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('users/', include('users.urls')),
     path('iot/', include('iot.urls')),
-    path('servicios/', include('servicios.urls')),
+    path('', include('servicios.urls')),
     path('mqtt_server/', include('mqtt_server.urls')),
 ]
