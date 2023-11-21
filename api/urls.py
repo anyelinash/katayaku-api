@@ -22,5 +22,5 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('iot/', include('iot.urls')),
     path('', include('servicios.urls')),
-    path('mqtt_server/', include('mqtt_server.urls')),
+    path('mqtt/', include('mqtt_server.urls')),
 ]
