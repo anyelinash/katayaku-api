@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'katanyttdb',
+        'NAME': 'katanytt_db',
         'USER': 'root',
         'PASSWORD': '6SQPauK43WnDwbOzDqI8SJZ97lwpW2qH',
         'HOST': '34.73.226.103',
