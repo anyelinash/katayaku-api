@@ -11,7 +11,7 @@ class ModuloSerializer(serializers.ModelSerializer):
 class ReleSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegistrosRele
-        fields = ('cod_registro', 'cod_modulo', 'fecha_hora', 'accion')
+        fields = ('is_on', 'cod_registro', 'cod_modulo', 'fecha_hora')
 
 # Sensor de flujo de agua
 class AguaSerializer(serializers.ModelSerializer):

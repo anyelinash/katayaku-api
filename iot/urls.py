@@ -13,6 +13,9 @@ urlpatterns = [
     path('releregistros', views.ReleView.as_view(), name='regisrele'),
     path('releregistro/<int:pk>', views.ReleDetailView.as_view()),
 
+    #control de estado del relé
+    path('relay/', views.RelayControlView.as_view(), name='relay-control'),
+
     # Sensor de flujo de agua
     path('aguaregistros', views.AguaView.as_view(), name='regisagua'),
     path('aguaregistro/<int:pk>', views.AguaDetailView.as_view()),

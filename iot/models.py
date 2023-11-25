@@ -17,10 +17,11 @@ class Modulo(models.Model):
 
 # Relé
 class RegistrosRele(models.Model):
+    is_on = models.BooleanField(default=False)
     cod_registro = models.AutoField(primary_key=True)
     cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
-    accion = models.CharField(max_length=25)
+    #accion = models.CharField(max_length=25)
 
     def __str__(self):
         return f'Registro de Relé {self.cod_registro}'

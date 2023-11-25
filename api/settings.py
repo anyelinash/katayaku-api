@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,11 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mqtt_server',
     'users',
     'iot',
-    'servicios',
-    'channels'
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -86,7 +83,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'katanyttdb',
         'USER': 'root',
         'PASSWORD': '6SQPauK43WnDwbOzDqI8SJZ97lwpW2qH',
@@ -137,8 +134,3 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#WEBSOCKET_URL
-WEBSOCKET_URL = config('WEBSOCKET_URL', default='ws://localhost:8000/ws/')
-
-#SGI_APPLICATION
-ASGI_APPLICATION = 'katayaku-api.asgi.servicios'

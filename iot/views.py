@@ -2,6 +2,7 @@ from .models import *
 from .serializer import ModuloSerializer, ReleSerializer, AguaSerializer, SonicoSerializer, AireSerializer, \
     AlertReleSerializer, AlertAguaSerializer, AlertSonicoSerializer, AlertAireSerializer, MantenimientoSerializer, \
     TemporizadorSerializer
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -83,6 +84,19 @@ class ReleDetailView(APIView):
         dataRele.delete()
         return Response(serRele.data)
 
+# Para el control de estado de relé
+class RelayControlView(APIView):
+    def get(self, request):
+        relay = RegistrosRele.objects.first()
+        serializer = ReleSerializer(relay)
+        return Response(serializer.data)
+
+    def post(self, request):
+        relay = RegistrosRele.objects.first()
+        relay.is_on = not relay.is_on
+        relay.save()
+        serializer = ReleSerializer(relay)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # Sensor de flujo de agua
 class AguaView(APIView):
