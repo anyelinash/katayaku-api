@@ -1,8 +1,13 @@
 from django.urls import path
 from . import views
+from .views import *
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+
+    #prueba
+    path('reles/', views.ReleListCreateView.as_view(), name='rele-list-create'),
+    path('reles/<int:pk>/', views.RelayDetailView.as_view(), name='rele-detail'),
 
     # Modulos - General
     path('modulos', views.ModsView.as_view(), name='modulos'),

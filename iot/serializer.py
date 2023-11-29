@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from .models import *
 
+#prueba
+class RelaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rele
+        fields = ['id', 'nombre', 'topico', 'status']
+#
+
 # Módulos - General
 class ModuloSerializer(serializers.ModelSerializer):
     class Meta:
