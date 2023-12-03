@@ -8,10 +8,13 @@ urlpatterns = [
     path('empresa/<int:pk>', views.EmpDetailView.as_view()),
 
     # Usuario
-    path('usuarios', views.UsuView.as_view(), name='usuarios'),
+    path('register/', views.UsuarioRegistrationView.as_view(), name='register'),
+    path('login/', views.UsuarioLoginView.as_view(), name='login'),
+    path('api/logout/', views.UsuarioLogoutView.as_view(), name='logout'),
+    # path('login/', views.obtain_auth_token, name='api-token-auth'),
+    path('usuarios', views.UsuListView.as_view(), name='usuarios'),
     path('usuario/<int:pk>', views.UsuDetailView.as_view()),
 
-    path('usuarios/por_empresa/<str:cod_emp>/', views.UsuariosPorEmpresaView.as_view(), name='usuarios-por-empresa'),
 
     
     path('reportes', views.RepView.as_view(), name='reportes'),

@@ -1,11 +1,10 @@
 from django.urls import path
 from . import views
-from .views import *
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
 
-    #prueba
+    # prueba
     path('reles/', views.ReleListCreateView.as_view(), name='rele-list-create'),
     path('reles/<int:pk>/', views.RelayDetailView.as_view(), name='rele-detail'),
 
@@ -18,7 +17,7 @@ urlpatterns = [
     path('releregistros', views.ReleView.as_view(), name='regisrele'),
     path('releregistro/<int:pk>', views.ReleDetailView.as_view()),
 
-    #control de estado del relé
+    # control de estado del relé
     path('relay/', views.RelayControlView.as_view(), name='relay-control'),
 
     # Sensor de flujo de agua

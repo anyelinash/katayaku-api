@@ -1,8 +1,15 @@
 from .models import Usuario, Empresa, Reporte
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .serializer import EmpresaSerializer, UsuarioSerializer, ReporteSerializer
+from rest_framework import status, generics, permissions
+from .serializer import *
+from django.contrib.auth.decorators import login_required
+# from django.http import JsonResponse
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate, login
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class IndexView(APIView):
@@ -50,49 +57,78 @@ class EmpDetailView(APIView):
 
 
 # Usuario
-class UsuView(APIView):
 
-    def get(self, request):
-        dataUsu = Usuario.objects.all()
-        serUsu = UsuarioSerializer(dataUsu, many=True)
-        return Response(serUsu.data)
+class UsuarioRegistrationView(APIView):
+    def post(self, request):
+        serializer = UsuarioRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UsuarioLoginView(APIView):
+    def post(self, request):
+        serializer = UsuarioLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = authenticate(request, correo=serializer.validated_data['correo'], contrasena=serializer.validated_data['contrasena'])
+            if user:
+                login(request, user)
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UsuListView(generics.ListCreateAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+
+    @authentication_classes([TokenAuthentication, SessionAuthentication])
+    @permission_classes([permissions.IsAuthenticated])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @authentication_classes([TokenAuthentication, SessionAuthentication])
+    @permission_classes([permissions.IsAuthenticated])
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+class UsuDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+
+    @authentication_classes([TokenAuthentication, SessionAuthentication])
+    @permission_classes([permissions.IsAuthenticated])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    @authentication_classes([TokenAuthentication, SessionAuthentication])
+    @permission_classes([permissions.IsAuthenticated])
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+    @authentication_classes([TokenAuthentication, SessionAuthentication])
+    @permission_classes([permissions.IsAuthenticated])
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
+
+
+class UsuarioLogoutView(APIView):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        serUsu = UsuarioSerializer(data=request.data)
-        serUsu.is_valid(raise_exception=True)
-        serUsu.save()
-        return Response(serUsu.data)
+        # Aquí puedes realizar cualquier lógica de logout necesaria
+        # Por ejemplo, invalidar tokens, eliminar sesiones, etc.
+        request.auth.delete()  # Eliminar el token de autenticación (si estás utilizando tokens)
 
+        # Otros pasos de logout según tu implementación
 
-class UsuDetailView(APIView):
-    def get(self, request, pk):
-        dataUsu = Usuario.objects.get(codigo_usu=pk)
-        serUsu = UsuarioSerializer(dataUsu)
-        return Response(serUsu.data)
-
-    def put(self, request, pk):
-        dataUsu = Usuario.objects.get(codigo_usu=pk)
-        serUsu = UsuarioSerializer(dataUsu, data=request.data)
-        serUsu.is_valid(raise_exception=True)
-        serUsu.save()
-        return Response(serUsu.data)
-
-    def delete(self, request, pk):
-        dataUsu = Usuario.objects.get(codigo_usu=pk)
-        serUsu = UsuarioSerializer(dataUsu)
-        dataUsu.delete()
-        return Response(serUsu.data)
-
-
-class UsuariosPorEmpresaView(APIView):
-    def get(self, request, cod_emp, format=None):
-        try:
-            usuarios = Usuario.objects.filter(codigo_emp=cod_emp)
-            usuario_data = [{'codigo_usu': usuario.codigo_usu, 'nombre': usuario.nombre} for usuario in usuarios]
-            return Response(usuario_data, status=status.HTTP_200_OK)
-        except Usuario.DoesNotExist:
-            return Response({'error': 'No se encontraron usuarios para la empresa con el código proporcionado'},
-                            status=status.HTTP_404_NOT_FOUND)
+        return Response({'detail': 'Logout exitoso'}, status=status.HTTP_200_OK)
 
 
 # Reportes de usuarios

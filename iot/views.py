@@ -4,14 +4,14 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
-#prueba
+# prueba
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 import paho.mqtt.client as mqtt
 from django.conf import settings
 from .models import Rele
+
 
 class ReleListCreateView(generics.ListCreateAPIView):
     queryset = Rele.objects.all()
@@ -44,6 +44,7 @@ class ReleListCreateView(generics.ListCreateAPIView):
 
         client.publish(topic, message)
         client.disconnect()
+
 
 class RelayDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Rele.objects.all()
@@ -95,6 +96,7 @@ class IndexView(APIView):
         context = {'mensaje': 'servidor activo'}
         return Response(context)
 
+
 # Módulos - General
 class ModsView(APIView):
 
@@ -130,6 +132,7 @@ class ModsDetailView(APIView):
         dataMods.delete()
         return Response(serMods.data)
 
+
 # Registros
 # Relé
 class ReleView(APIView):
@@ -164,6 +167,7 @@ class ReleDetailView(APIView):
         dataRele.delete()
         return Response(serRele.data)
 
+
 # Para el control de estado de relé
 class RelayControlView(APIView):
     def get(self, request):
@@ -177,6 +181,7 @@ class RelayControlView(APIView):
         relay.save()
         serializer = ReleSerializer(relay)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 # Sensor de flujo de agua
 class AguaView(APIView):
