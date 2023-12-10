@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'users',
     'iot',
     'corsheaders',
-]
+    'channels',
+    'notis',
+    'django_celery_beat',
+    ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -75,12 +78,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'notis.custom_context_processors.notifications'
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'api.wsgi.application'
+ASGI_APPLICATION = 'api.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -119,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
@@ -135,7 +141,36 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-BROKER_HOST = '34.23.25.139'
+BROKER_HOST = '34.73.226.103'
 BROKER_PORT = 1883
 BROKER_USERNAME = 'admin'
-BROKER_PASSWORD = '@Parqueaya2023'
+BROKER_PASSWORD = '@Katanytt2023'
+
+# Utilizando la información de tu URI de Redis
+REDIS_HOST = '34.73.226.103'
+REDIS_PORT = 6379
+REDIS_PASSWORD = 'tOQ5nDUTfqgBDL7igPxf2z2YzB1a2q0qIb8vcHMYO3LSRGe9NDVxcaFdmpPJJt2k'
+REDIS_DB = 0
+
+# Actualizando la configuración de CHANNEL_LAYERS
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(REDIS_HOST, REDIS_PORT)],
+            "password": REDIS_PASSWORD,
+            "db": REDIS_DB,
+        },
+    },
+}
+
+
+# CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://:tOQ5nDUTfqgBDL7igPxf2z2YzB1a2q0qIb8vcHMYO3LSRGe9NDVxcaFdmpPJJt2k@34.73.226.103:6379/0'
+CELERY_RESULT_BACKEND = 'redis://:tOQ5nDUTfqgBDL7igPxf2z2YzB1a2q0qIb8vcHMYO3LSRGe9NDVxcaFdmpPJJt2k@34.73.226.103:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'America/Lima'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
