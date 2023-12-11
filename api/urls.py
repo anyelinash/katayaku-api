@@ -21,5 +21,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('v1/users/', include('users.urls')),
     path('v1/iot/', include('iot.urls')),
-    path('v1/notis/', include('notis.urls'))
+    path('v1/notis/', include('notis.urls')),
+    path('v1/services/', include('services.urls'))
 ]

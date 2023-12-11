@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'channels',
     'notis',
+    'services',
     'django_celery_beat',
     ]
 
