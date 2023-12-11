@@ -31,6 +31,7 @@ class Usuario(AbstractBaseUser):
     provider_specific_uid = models.CharField(max_length=255)
     nombre = models.CharField(max_length=200)
     dni = models.CharField(max_length=8)
+    telefono = models.CharField(max_length=15, blank=True, null=True)
     correo = models.EmailField(unique=True)
     password = models.CharField(max_length=128, default='')
     photo_url = models.URLField()
@@ -41,7 +42,7 @@ class Usuario(AbstractBaseUser):
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'correo'
-    REQUIRED_FIELDS = ['nombre']
+    REQUIRED_FIELDS = ['nombre', 'dni', 'telefono', 'correo','password']
 
     def __str__(self):
         return self.nombre
