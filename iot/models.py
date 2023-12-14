@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Empresa
+from users.models import Empresa, Usuario
 
 #prueba
 class Rele(models.Model):
@@ -15,11 +15,11 @@ class Rele(models.Model):
 # Módulos
 class Modulo(models.Model):
     cod_modulo = models.AutoField(primary_key=True)
-    codigo_emp = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=255)
     ubicacion = models.CharField(max_length=255)
     descripcion = models.TextField()
-    estado = models.CharField(max_length=20)
+    estado = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre
@@ -90,27 +90,7 @@ class AlertasRele(models.Model):
 
     def __str__(self):
         return f'Alerta {self.cod_alerta}'
-    
-class AlertasAgua(models.Model):
-    cod_alerta = models.AutoField(primary_key=True)
-    cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
-    cod_registro = models.ForeignKey(RegistrosAgua, on_delete=models.CASCADE)
-    fecha_hora = models.DateTimeField()
-    tipo_alerta = models.CharField(max_length=255)
 
-    def __str__(self):
-        return f'Alerta {self.cod_alerta}'
-
-class AlertasSonico(models.Model):
-    cod_alerta = models.AutoField(primary_key=True)
-    cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)
-    cod_registro = models.ForeignKey(RegistrosUltrasonico, on_delete=models.CASCADE)
-    fecha_hora = models.DateTimeField()
-    tipo_alerta = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f'Alerta {self.cod_alerta}'
-    
 class AlertasAire(models.Model):
     cod_alerta = models.AutoField(primary_key=True)
     cod_modulo = models.ForeignKey(Modulo, on_delete=models.CASCADE)

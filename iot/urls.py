@@ -20,14 +20,6 @@ urlpatterns = [
     # control de estado del relé
     path('relay/', views.RelayControlView.as_view(), name='relay-control'),
 
-    # Sensor de flujo de agua
-    path('aguaregistros', views.AguaView.as_view(), name='regisagua'),
-    path('aguaregistro/<int:pk>', views.AguaDetailView.as_view()),
-
-    # Sensor ultrasónico
-    path('sonicoregistros', views.SonicView.as_view(), name='regisonicos'),
-    path('sonicoregistro/<int:pk>', views.SonicDetailView.as_view()),
-
     # Sensor de calidad de aire
     path('airegistros', views.AireView.as_view(), name='regisaire'),
     path('airegistro/<int:pk>', views.AireDetailView.as_view()),
@@ -36,14 +28,6 @@ urlpatterns = [
     # Alertas Rele
     path('relealertas', views.AltReleView.as_view(), name='altrele'),
     path('relealerta/<int:pk>', views.AltReleDetailView.as_view()),
-
-    # Alertas Sensor de flujo de agua
-    path('agualertas', views.AltAguaView.as_view(), name='altagua'),
-    path('agualerta/<int:pk>', views.AltAguaDetailView.as_view()),
-
-    # Alertas Sensor ultrasónico
-    path('sonicoalertas', views.AltSonicView.as_view(), name='altsonico'),
-    path('sonicoalerta/<int:pk>', views.AltSonicDetailView.as_view()),
 
     # Alertas Sensor de calidad de aire
     path('airealertas', views.AltAireView.as_view(), name='altaire'),
