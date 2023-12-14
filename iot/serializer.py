@@ -15,7 +15,7 @@ class RelaySerializer(serializers.ModelSerializer):
 class ModuloSerializer(serializers.ModelSerializer):
     class Meta:
         model = Modulo
-        fields = ('cod_modulo', 'codigo_emp', 'nombre', 'ubicacion', 'descripcion', 'estado')
+        fields = ('cod_modulo', 'codigo_usu', 'nombre', 'ubicacion', 'descripcion', 'estado')
 
 
 # Relé
