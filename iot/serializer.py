@@ -24,21 +24,6 @@ class ReleSerializer(serializers.ModelSerializer):
         model = RegistrosRele
         fields = ('is_on', 'cod_registro', 'cod_modulo', 'fecha_hora')
 
-
-# Sensor de flujo de agua
-class AguaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RegistrosAgua
-        fields = ('cod_registro', 'cod_modulo', 'fecha_hora', 'flujo', 'unidadmedida', 'nivelflujo')
-
-
-# Sensor ultrasónico
-class SonicoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RegistrosUltrasonico
-        fields = '__all__'
-
-
 # Sensor de calidad de aire
 class AireSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,21 +37,6 @@ class AlertReleSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlertasRele
         fields = '__all__'
-
-
-# Alertas Sensor de flujo de agua
-class AlertAguaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AlertasAgua
-        fields = '__all__'
-
-
-# Alertas Sensor ultrasónico
-class AlertSonicoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AlertasSonico
-        fields = '__all__'
-
 
 # Alertas Sensor de calidad de aire
 class AlertAireSerializer(serializers.ModelSerializer):
