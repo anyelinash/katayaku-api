@@ -117,7 +117,7 @@ class Mantenimientos(models.Model):
 # temporizadores
 class Temporizadores(models.Model):
     cod_temp = models.AutoField(primary_key=True)
-    codigo_emp = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE, default=1)
     temp_inicio = models.DateTimeField()
     temp_fin = models.DateTimeField()
     accion = models.CharField(max_length=25)
