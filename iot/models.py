@@ -15,7 +15,7 @@ class Rele(models.Model):
 # Módulos
 class Modulo(models.Model):
     cod_modulo = models.AutoField(primary_key=True)
-    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE, default=1)
     nombre = models.CharField(max_length=255)
     ubicacion = models.CharField(max_length=255)
     descripcion = models.TextField()
