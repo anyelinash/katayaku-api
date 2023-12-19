@@ -58,48 +58,31 @@ class EmpDetailView(APIView):
 
 # Usuario
 
-class UsuarioRegistrationView(APIView):
-    def post(self, request):
-        serializer = UsuarioRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UsuarioLoginView(APIView):
-    def post(self, request):
-        serializer = UsuarioLoginSerializer(data=request.data)
-        print(serializer)
-        if serializer.is_valid():
-            user = authenticate(request, correo=serializer.validated_data['correo'],
-                                contrasena=serializer.validated_data['contrasena'])
-            print(user)
-            if user:
-                login(request, user)
-                token, _ = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
-            else:
-                print(serializer.is_valid())
-                print(f'Authentication Error: {user}')
-                return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UsuListView(generics.ListCreateAPIView):
+class UsuarioListView(generics.ListAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
-    @authentication_classes([TokenAuthentication, SessionAuthentication])
-    @permission_classes([permissions.IsAuthenticated])
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
 
-    @authentication_classes([TokenAuthentication, SessionAuthentication])
-    @permission_classes([permissions.IsAuthenticated])
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+class UsuarioRegistrationView(generics.CreateAPIView):
+    serializer_class = UsuarioRegistrationSerializer
+
+
+class UsuarioLoginView(generics.CreateAPIView):
+    serializer_class = UsuarioLoginSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = authenticate(request, correo=serializer.validated_data['correo'],
+                            contrasena=serializer.validated_data['contrasena'])
+
+        if user:
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UsuDetailView(generics.RetrieveUpdateDestroyAPIView):

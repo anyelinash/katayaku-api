@@ -11,7 +11,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['codigo_usu', 'provider_id', 'provider_specific_uid', 'nombres', 'apellidos', 'dni', 'telefono', 'correo', 'password', 'photo_url']
+        fields = '__all__'
 
 
 class UsuarioRegistrationSerializer(serializers.ModelSerializer):
@@ -19,11 +19,10 @@ class UsuarioRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields = ['correo', 'contrasena', 'nombres', 'apellidos', 'dni', 'telefono', 'photo_url']
 
     def create(self, validated_data):
-        user = Usuario.objects.create_user(**validated_data)
-        return user
+        return Usuario.objects.create_user(**validated_data)
 
 
 class UsuarioLoginSerializer(serializers.Serializer):

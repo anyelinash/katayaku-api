@@ -12,7 +12,7 @@ urlpatterns = [
     path('login/', views.UsuarioLoginView.as_view(), name='login'),
     path('api/logout/', views.UsuarioLogoutView.as_view(), name='logout'),
     # path('login/', views.obtain_auth_token, name='api-token-auth'),
-    path('usuarios', views.UsuListView.as_view(), name='usuarios'),
+    path('usuarios', views.UsuarioListView.as_view(), name='usuarios'),
     path('usuario/<int:pk>', views.UsuDetailView.as_view()),
 
 

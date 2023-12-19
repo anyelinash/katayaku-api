@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 
@@ -6,26 +6,23 @@ class UsuarioManager(BaseUserManager):
     def create_user(self, correo, contrasena=None, **extra_fields):
         if not correo:
             raise ValueError('El correo electrónico es obligatorio')
-        email = self.normalize_email(correo)
-        user = self.model(email=email, **extra_fields)
+
+        correo = self.normalize_email(correo)
+        user = self.model(correo=correo, **extra_fields)
         user.set_password(contrasena)
         user.save(using=self._db)
         return user
 
     def create_superuser(self, correo, contrasena=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('El superusuario debe tener is_staff=True')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('El superusuario debe tener is_superuser=True')
 
         return self.create_user(correo, contrasena, **extra_fields)
 
 
-class Usuario(AbstractBaseUser, PermissionsMixin):
-    codigo_usu = models.AutoField(primary_key=True)
+class Usuario(AbstractBaseUser):
     provider_id = models.CharField(max_length=255)
     provider_specific_uid = models.CharField(max_length=255)
     nombres = models.CharField(max_length=200)
@@ -35,33 +32,13 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     correo = models.EmailField(unique=True)
     photo_url = models.URLField()
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
 
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'correo'
 
-    # No es necesario definir el campo 'password' aquí, ya que está incluido en AbstractBaseUser
-
     def __str__(self):
         return f"{self.nombres} {self.apellidos} - {self.correo}"
-
-    groups = models.ManyToManyField(
-        'auth.Group',
-        verbose_name='groups',
-        blank=True,
-        related_name='usuario_groups',  # Cambia 'usuario_groups' a algo único y significativo
-        help_text='The groups this user belongs to.',
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        verbose_name='user permissions',
-        blank=True,
-        related_name='usuario_user_permissions',  # Cambia 'usuario_user_permissions' a algo único y significativo
-        help_text='Specific permissions for this user.',
-    )
-
-
 
 
 # Empresa
