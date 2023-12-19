@@ -11,7 +11,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['codigo_usu', 'provider_id', 'provider_specific_uid', 'nombres', 'apellidos', 'dni', 'telefono', 'correo', 'contrasena', 'photo_url']
+        fields = ['codigo_usu', 'provider_id', 'provider_specific_uid', 'nombres', 'apellidos', 'dni', 'telefono', 'correo', 'password', 'photo_url']
 
 
 class UsuarioRegistrationSerializer(serializers.ModelSerializer):
