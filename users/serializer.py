@@ -15,11 +15,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 
 class UsuarioRegistrationSerializer(serializers.ModelSerializer):
-    contrasena = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = Usuario
-        fields = ['codigo_usu', 'provider_id', 'provider_specific_uid', 'nombre', 'dni', 'correo', 'photo_url', 'contrasena']
+        fields = ['codigo_usu', 'provider_id', 'provider_specific_uid', 'nombre', 'dni', 'correo', 'password', 'photo_url']
 
     def create(self, validated_data):
         user = Usuario.objects.create_user(**validated_data)
@@ -28,7 +28,7 @@ class UsuarioRegistrationSerializer(serializers.ModelSerializer):
 
 class UsuarioLoginSerializer(serializers.Serializer):
     correo = serializers.EmailField()
-    contrasena = serializers.CharField(style={'input_type': 'password'})
+    password = serializers.CharField(style={'input_type': 'password'})
 
 
 # Reportes de usuarios

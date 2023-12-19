@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
-# Usuarios
 class UsuarioManager(BaseUserManager):
     def create_user(self, correo, contrasena=None, **extra_fields):
         if not correo:
@@ -26,37 +25,36 @@ class UsuarioManager(BaseUserManager):
 
 
 class Usuario(AbstractBaseUser):
-    codigo_usu = models.AutoField(primary_key=True)  # PK autoincremental
+    codigo_usu = models.AutoField(primary_key=True)
     provider_id = models.CharField(max_length=255)
     provider_specific_uid = models.CharField(max_length=255)
     nombre = models.CharField(max_length=200)
+    apellidos = models.CharField(max_length=200, default='')
     dni = models.CharField(max_length=8)
     telefono = models.CharField(max_length=15, blank=True, null=True)
     correo = models.EmailField(unique=True)
     password = models.CharField(max_length=128, default='')
     photo_url = models.URLField()
-
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'correo'
-    REQUIRED_FIELDS = ['nombre', 'dni', 'telefono', 'correo','password']
+    REQUIRED_FIELDS = ['nombre', 'apellidos', 'dni', 'telefono', 'password']
 
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} {self.apellidos}"  # Display both name and last name
 
     def logout(self):
-        # Puedes personalizar este método según tus necesidades
-        # Por ejemplo, aquí podrías invalidar tokens de autenticación, si estás utilizando tokens.
+        # Custom logic for logout, if needed
         pass
 
 
 # Empresa
 class Empresa(models.Model):
     codigo_emp = models.AutoField(primary_key=True)  # PK autoincremental
-    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE) # FK a la tabla Usuario
+    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE)  # FK a la tabla Usuario
     nombre = models.CharField(max_length=200)
     ruc = models.CharField(max_length=11)
     correo = models.EmailField()
