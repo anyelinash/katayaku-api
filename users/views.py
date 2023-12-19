@@ -71,14 +71,18 @@ class UsuarioRegistrationView(APIView):
 class UsuarioLoginView(APIView):
     def post(self, request):
         serializer = UsuarioLoginSerializer(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             user = authenticate(request, correo=serializer.validated_data['correo'],
                                 contrasena=serializer.validated_data['contrasena'])
+            print(user)
             if user:
                 login(request, user)
                 token, _ = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
             else:
+                print(serializer.is_valid())
+                print(f'Authentication Error: {user}')
                 return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
