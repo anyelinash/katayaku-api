@@ -95,7 +95,7 @@ ASGI_APPLICATION = 'api.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'katanytt_dev',
+        'NAME': 'katanytt_db',
         'USER': 'root',
         'PASSWORD': '6SQPauK43WnDwbOzDqI8SJZ97lwpW2qH',
         'HOST': '34.73.226.103',
