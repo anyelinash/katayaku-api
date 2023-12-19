@@ -120,7 +120,7 @@ class Temporizadores(models.Model):
     codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE, default=1)
     temp_inicio = models.DateTimeField()
     temp_fin = models.DateTimeField()
-    accion = models.BooleanField(default=False)
+    accion = models.CharField(max_length=25)
 
     def __str__(self):
         return f'Temporizador {self.cod_temp}'
