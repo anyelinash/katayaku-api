@@ -33,7 +33,7 @@ class Usuario(AbstractBaseUser):
     dni = models.CharField(max_length=8)
     telefono = models.CharField(max_length=15, blank=True, null=True)
     correo = models.EmailField(unique=True)
-    password = models.CharField(max_length=128, default='')
+    contrasena = models.CharField(max_length=128, default='')
     photo_url = models.URLField()
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -41,7 +41,7 @@ class Usuario(AbstractBaseUser):
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'correo'
-    REQUIRED_FIELDS = ['nombre', 'apellidos', 'dni', 'telefono', 'password']
+    REQUIRED_FIELDS = ['nombre', 'apellidos', 'dni', 'telefono', 'contrasena']
 
     def __str__(self):
         return f"{self.nombre} {self.apellidos}"  # Display both name and last name
@@ -52,16 +52,23 @@ class Usuario(AbstractBaseUser):
 
 
 # Empresa
+# Empresa
 class Empresa(models.Model):
     codigo_emp = models.AutoField(primary_key=True)  # PK autoincremental
-    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE)  # FK a la tabla Usuario
-    nombre = models.CharField(max_length=200)
-    ruc = models.CharField(max_length=11)
-    correo = models.EmailField()
-    contrasena = models.CharField(max_length=20)
+    codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE) # FK a la tabla Usuario
+    numero = models.CharField(max_length=20, default='')
+    nombre_o_razon_social = models.CharField(max_length=255, default='')
+    tipo_contribuyente = models.CharField(max_length=50, default='')
+    estado = models.CharField(max_length=20, default='')
+    condicion = models.CharField(max_length=20, default='')
+    departamento = models.CharField(max_length=50, default='')
+    provincia = models.CharField(max_length=50, default='')
+    distrito = models.CharField(max_length=50, default='')
+    direccion = models.CharField(max_length=255, default='')
+    direccion_completa = models.CharField(max_length=255, default='')
 
-    def __str__(self):
-        return self.nombre
+    def _str_(self):
+        return self.numero
 
 
 # Reportes de usuario

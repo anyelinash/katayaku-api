@@ -73,10 +73,10 @@ class UsuarioLoginView(APIView):
         serializer = UsuarioLoginSerializer(data=request.data)
         if serializer.is_valid():
             correo = serializer.validated_data['correo']
-            password = serializer.validated_data['password']
+            contrasena = serializer.validated_data['contrasena']
 
             # Authenticate user
-            usuario = authenticate(request, correo=correo, password=password)
+            usuario = authenticate(request, correo=correo, contrasena=contrasena)
             if usuario:
                 # Login user
                 login(request, usuario)
