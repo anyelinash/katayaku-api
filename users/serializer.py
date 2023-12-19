@@ -19,7 +19,7 @@ class UsuarioRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Usuario
-        fields = ['codigo_usu', 'provider_id', 'provider_specific_uid', 'nombre', 'dni', 'correo', 'contrasena', 'photo_url']
+        fields = '__all__'
 
     def create(self, validated_data):
         user = Usuario.objects.create_user(**validated_data)
@@ -28,7 +28,7 @@ class UsuarioRegistrationSerializer(serializers.ModelSerializer):
 
 class UsuarioLoginSerializer(serializers.Serializer):
     correo = serializers.EmailField()
-    contrasena = serializers.CharField(style={'input_type': 'contrasena'})
+    contrasena = serializers.CharField(style={'input_type': 'password'})
 
 
 # Reportes de usuarios

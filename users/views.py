@@ -62,7 +62,7 @@ class UsuarioRegistrationView(APIView):
     def post(self, request):
         serializer = UsuarioRegistrationSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()  # This calls Usuario.objects.create_user
+            user = serializer.save()
             token, _ = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -72,19 +72,12 @@ class UsuarioLoginView(APIView):
     def post(self, request):
         serializer = UsuarioLoginSerializer(data=request.data)
         if serializer.is_valid():
-            correo = serializer.validated_data['correo']
-            contrasena = serializer.validated_data['contrasena']
-
-            # Authenticate user
-            usuario = authenticate(request, correo=correo, contrasena=contrasena)
-            if usuario:
-                # Login user
-                login(request, usuario)
-
-                # Assuming you are using the `Token` model from DRF for token authentication
-                token, _ = Token.objects.get_or_create(user=usuario)
-
-                return Response({'token': token.key, 'user': UsuarioSerializer(usuario).data}, status=status.HTTP_200_OK)
+            user = authenticate(request, correo=serializer.validated_data['correo'],
+                                contrasena=serializer.validated_data['contrasena'])
+            if user:
+                login(request, user)
+                token, _ = Token.objects.get_or_create(user=user)
+                return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
             else:
                 return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -29,26 +29,23 @@ class Usuario(AbstractBaseUser):
     provider_id = models.CharField(max_length=255)
     provider_specific_uid = models.CharField(max_length=255)
     nombre = models.CharField(max_length=200)
-    apellidos = models.CharField(max_length=200, default='')
+    apellidos = models.CharField(max_length=200)  # Added apellidos field
     dni = models.CharField(max_length=8)
     telefono = models.CharField(max_length=15, blank=True, null=True)
     correo = models.EmailField(unique=True)
-    contrasena = models.CharField(max_length=128, default='')
+    password = models.CharField(max_length=128, default='')
     photo_url = models.URLField()
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    objects = UsuarioManager()
-
-    USERNAME_FIELD = 'correo'
-    REQUIRED_FIELDS = ['nombre', 'apellidos', 'dni', 'telefono', 'contrasena']
+    @property
+    def usuario(self):
+        primer_nombre = self.nombre.split()[0] if self.nombre else ""
+        primer_apellido = self.apellidos.split()[0] if self.apellidos else ""
+        return f"{primer_nombre}_{primer_apellido}"
 
     def __str__(self):
-        return f"{self.nombre} {self.apellidos}"  # Display both name and last name
-
-    def logout(self):
-        # Custom logic for logout, if needed
-        pass
+        return f"{self.usuario} - {self.correo}"
 
 
 # Empresa
