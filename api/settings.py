@@ -100,7 +100,15 @@ DATABASES = {
         'PASSWORD': '6SQPauK43WnDwbOzDqI8SJZ97lwpW2qH',
         'HOST': '34.73.226.103',
         'PORT': '4406',
-    }
+    },
+    'test': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': "test_db",
+        'USER': 'root',
+        'PASSWORD': '6SQPauK43WnDwbOzDqI8SJZ97lwpW2qH',
+        'HOST': '34.73.226.103',
+        'PORT': '4406',
+    },
 }
 
 # Password validation

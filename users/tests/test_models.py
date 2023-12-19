@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from .models import Empresa, Reporte
+from users.models import Empresa, Reporte
 
 User = get_user_model()
 
@@ -10,7 +10,7 @@ class UsuarioModelTest(TestCase):
         self.user = User.objects.create_user(
             correo='test@example.com',
             contrasena='testpassword',
-            nombres='John Damian',
+            nombres='John',
             apellidos='Doe',
             dni='12345678',
             telefono='123456789',

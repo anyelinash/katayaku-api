@@ -7,7 +7,7 @@ class UsuarioManager(BaseUserManager):
         if not correo:
             raise ValueError('El correo electrónico es obligatorio')
         email = self.normalize_email(correo)
-        user = self.model(correo=email, **extra_fields)
+        user = self.model(username=email, correo=email, **extra_fields)
         user.set_password(contrasena)
         user.save(using=self._db)
         return user
@@ -28,19 +28,19 @@ class Usuario(AbstractBaseUser):
     codigo_usu = models.AutoField(primary_key=True)
     provider_id = models.CharField(max_length=255)
     provider_specific_uid = models.CharField(max_length=255)
-    nombre = models.CharField(max_length=200)
+    nombres = models.CharField(max_length=200)
     apellidos = models.CharField(max_length=200)  # Added apellidos field
     dni = models.CharField(max_length=8)
     telefono = models.CharField(max_length=15, blank=True, null=True)
     correo = models.EmailField(unique=True)
-    password = models.CharField(max_length=128, default='')
+    password = models.CharField(max_length=128, verbose_name='contraseña')
     photo_url = models.URLField()
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
     @property
     def usuario(self):
-        primer_nombre = self.nombre.split()[0] if self.nombre else ""
+        primer_nombre = self.nombres.split()[0] if self.nombres else ""
         primer_apellido = self.apellidos.split()[0] if self.apellidos else ""
         return f"{primer_nombre}_{primer_apellido}"
 
@@ -49,8 +49,8 @@ class Usuario(AbstractBaseUser):
 
 
 # Empresa
-# Empresa
 class Empresa(models.Model):
+    objects = None
     codigo_emp = models.AutoField(primary_key=True)  # PK autoincremental
     codigo_usu = models.ForeignKey(Usuario, on_delete=models.CASCADE) # FK a la tabla Usuario
     numero = models.CharField(max_length=20, default='')
