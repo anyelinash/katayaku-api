@@ -3,13 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .serializer import *
-from django.contrib.auth.decorators import login_required
-# from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
 from rest_framework.decorators import permission_classes, authentication_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import get_user_model
 
 
 class IndexView(APIView):
@@ -67,22 +66,32 @@ class UsuarioRegistrationView(generics.CreateAPIView):
     serializer_class = UsuarioRegistrationSerializer
 
 
-class UsuarioLoginView(generics.CreateAPIView):
-    serializer_class = UsuarioLoginSerializer
+class UsuarioLoginView(APIView):
+    def post(self, request):
+        global user_model
+        serializer = UsuarioLoginSerializer(data=request.data)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        if serializer.is_valid():
+            correo = serializer.validated_data['correo']
+            password = serializer.validated_data['contrasena']
 
-        user = authenticate(request, correo=serializer.validated_data['correo'],
-                            contrasena=serializer.validated_data['contrasena'])
+            try:
+                user_model = get_user_model()
+                user = user_model.objects.get(correo=correo)
+            except user_model.DoesNotExist:
+                return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        if user:
-            login(request, user)
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
+            if user.check_password(password):
+                token, _ = Token.objects.get_or_create(user=user)
+
+                # Autentica al usuario en la sesión
+                login(request, user)
+
+                return Response({'token': token.key, 'user': UsuarioSerializer(user).data}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Contraseña inválida'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UsuDetailView(generics.RetrieveUpdateDestroyAPIView):

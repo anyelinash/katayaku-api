@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Empresa, Usuario, Reporte
+from django.contrib.auth import authenticate
+from rest_framework import serializers
 
 
 class EmpresaSerializer(serializers.ModelSerializer):
@@ -27,7 +29,16 @@ class UsuarioRegistrationSerializer(serializers.ModelSerializer):
 
 class UsuarioLoginSerializer(serializers.Serializer):
     correo = serializers.EmailField()
-    contrasena = serializers.CharField(style={'input_type': 'password'})
+    password = serializers.CharField()
+
+    def validate(self, data):
+        correo = data.get('correo')
+        password = data.get('contrasena')
+
+        if not correo or not password:
+            raise serializers.ValidationError('Correo y contraseña son requeridos')
+
+        return data
 
 
 # Reportes de usuarios
