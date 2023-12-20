@@ -33,7 +33,7 @@ class UsuarioLoginSerializer(serializers.Serializer):
 
     def validate(self, data):
         correo = data.get('correo')
-        password = data.get('contrasena')
+        password = data.get('password')
 
         if not correo or not password:
             raise serializers.ValidationError('Correo y contraseña son requeridos')

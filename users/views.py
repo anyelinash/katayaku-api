@@ -68,16 +68,16 @@ class UsuarioRegistrationView(generics.CreateAPIView):
 
 class UsuarioLoginView(APIView):
     def post(self, request):
-        global user_model
         serializer = UsuarioLoginSerializer(data=request.data)
 
         if serializer.is_valid():
             correo = serializer.validated_data['correo']
-            password = serializer.validated_data['contrasena']
+            password = serializer.validated_data['password']
 
             try:
+                # Obtén el modelo de usuario personalizado
                 user_model = get_user_model()
-                user = user_model.objects.get(correo=correo)
+                user = user_model.objects.get(email=correo)
             except user_model.DoesNotExist:
                 return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_401_UNAUTHORIZED)
 
